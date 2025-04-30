@@ -276,6 +276,7 @@
         .navbar-links {
             display: flex;
             gap: 20px;
+            align-items: center;
         }
 
         .navbar-link {
@@ -288,6 +289,54 @@
 
         .navbar-link:hover {
             opacity: 1;
+        }
+
+        /* Logout Button */
+        .btn-logout {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-logout:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-logout i {
+            font-size: 16px;
+        }
+
+        /* User Info in Navbar */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-right: 15px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: white;
         }
 
         /* Card Stats */
@@ -382,6 +431,22 @@
                 flex-direction: column;
                 gap: 5px;
             }
+
+            .navbar-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .navbar-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .user-info {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
         }
 
         /* Animation */
@@ -400,6 +465,63 @@
         .card {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* Modal untuk konfirmasi logout */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .modal-message {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-close:hover {
+            color: #555;
+        }
     </style>
 </head>
 
@@ -411,6 +533,15 @@
                 <a href="#" class="navbar-link">Dashboard</a>
                 <a href="#" class="navbar-link">Pengaturan</a>
                 <a href="#" class="navbar-link">Profil</a>
+                
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div class="user-name">{{ Auth::user()->name ?? 'Admin' }}</div>
+                </div>
+                
+                <a href="#" class="btn-logout" onclick="confirmLogout(); return false;">
+                    <i>⟲</i> Logout
+                </a>
             </div>
         </div>
     </nav>
@@ -500,6 +631,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Konfirmasi Logout -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Konfirmasi Logout</div>
+            <div class="modal-message">Apakah Anda yakin ingin keluar dari sistem?</div>
+            <div class="modal-buttons">
+                <button class="btn btn-sm btn-warning" onclick="closeModal()">Batal</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-primary">Ya, Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan modal konfirmasi logout
+        function confirmLogout() {
+            document.getElementById('logoutModal').style.display = 'flex';
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+
+        // Tutup modal ketika user mengklik diluar modal
+        window.onclick = function(event) {
+            var modal = document.getElementById('logoutModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 
 </html>

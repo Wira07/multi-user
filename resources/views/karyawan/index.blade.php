@@ -48,6 +48,9 @@
             font-size: 20px;
             font-weight: 600;
             border-bottom: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .card-body {
@@ -167,6 +170,19 @@
             box-shadow: 0 4px 10px rgba(255, 127, 39, 0.3);
             transform: translateY(-2px);
         }
+        
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+            transform: translateY(-2px);
+        }
 
         .alert {
             position: relative;
@@ -225,6 +241,17 @@
             margin-bottom: 25px;
             border-left: 4px solid var(--primary-color);
         }
+        
+        .btn-logout {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -234,7 +261,13 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Dashboard Karyawan</div>
+                    <div class="card-header">
+                        <span>Dashboard Karyawan</span>
+                        <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="btn btn-danger btn-logout">Logout</button>
+                        </form>
+                    </div>
 
                     <div class="card-body">
                         <div class="dashboard-header">
@@ -269,7 +302,9 @@
                                 </tr>
                             </table>
 
-                            <a href="{{ route('karyawan.edit') }}" class="btn btn-primary">Edit Data</a>
+                            <div class="actions">
+                                <a href="{{ route('karyawan.edit') }}" class="btn btn-primary">Edit Data</a>
+                            </div>
                         </div>
                     </div>
                 </div>
